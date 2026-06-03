@@ -21,47 +21,99 @@ def get_player_data_from_match(match_data, puuid):
                 "damage": participant["totalDamageDealtToChampions"],
                 "vision_score": participant["visionScore"],
                 "cs": participant["totalMinionsKilled"],
-                "win": participant["win"]
+                "win": participant["win"],
+                "game_duration": match_data["info"]["gameDuration"],
+                "epic_takedowns": participant["challenges"]["baronTakedowns"] + participant["challenges"]["dragonTakedowns"] + participant["challenges"]["riftHeraldTakedowns"]
             }
             print(f"Player Data: {player_data}\n")
             return player_data
-    
     print(f"Error: Player with puuid {puuid} not found in match data")
     return None
 
-# i should just do all the aggregation here
-def build_archetype_role_vector(puuid, matches, region):
+def build_average_vector(puuid, matches, region):
     n = len(matches)
-    archetype_sum = {tag: 0 for tag in TAGS}
-    role_sum = {role: 0 for role in ROLES}
     if matches is None or n == 0:
         print(f"No matches found for puuid: {puuid}")
-        return {tag: 0 for tag in TAGS}
+        return {}
 
-    print(f"\nBuilding archetype vector for puuid: {puuid} using matches: {matches}")
+
+    print(f"\nBuilding average vector for puuid: {puuid} using matches: {matches}")
+
+    sums = {"archetype": {tag: 0 for tag in TAGS},
+            "role": {role: 0 for role in ROLES},
+            "kills": 0,
+            "deaths": 0,
+            "assists": 0,
+            "kill_participation": 0,
+            "damage": 0,
+            "vision_score": 0,
+            "cs": 0,
+            "win": 0,
+            "game_duration": 0,
+            "objective_participation": 0,
+            "epic_takedowns": 0}
+
+
     for match_id in matches:
         match_data = get_match_data(match_id, region)
         player_data = get_player_data_from_match(match_data, puuid)
 
         if player_data:
             role = player_data["role"]
-            role_sum[role] += 1
+            sums["role"][role] += 1
+            sums["kills"] += player_data["kills"]
+            sums["deaths"] += player_data["deaths"]
+            sums["assists"] += player_data["assists"]
+            sums["kill_participation"] += player_data["kill_participation"]
+            sums["damage"] += player_data["damage"]
+            sums["vision_score"] += player_data["vision_score"]
+            sums["cs"] += player_data["cs"]
+            sums["win"] += 1 if player_data["win"] else 0
+            sums["game_duration"] += player_data["game_duration"]
+            sums["epic_takedowns"] += player_data["epic_takedowns"]
+
             champion_name = player_data["champion"]
             tags = CHAMPION_TAGS[champion_name]
             if len(tags) == 1:
-                archetype_sum[tags[0]] += 1
+                sums["archetype"][tags[0]] += 1
             elif len(tags) == 2:
-                archetype_sum[tags[0]] += 0.7
-                archetype_sum[tags[1]] += 0.3
+                sums["archetype"][tags[0]] += 0.7
+                sums["archetype"][tags[1]] += 0.3
             else:
                 print(f"Error: Champion {champion_name} has unexpected number of tags: {len(tags)}")
+        
+        average_sums = {key: (sums[key] / len(matches) if isinstance(sums[key], (int, float)) else {subkey: sums[key][subkey] / len(matches) for subkey in sums[key]}) for key in sums}
+        deaths = 1
+        if average_sums["deaths"] > 0:
+            deaths = average_sums["deaths"]
+        average_sums["kda"] = (average_sums["kills"] + average_sums["assists"]) / deaths
+        average_sums["csm"] = average_sums["cs"] / (average_sums["game_duration"] / 60)
+        average_sums["dpm"] = average_sums["damage"] / (average_sums["game_duration"] / 60)
+        average_sums["vsm"] = average_sums["vision_score"] / (average_sums["game_duration"] / 60)
+        average_sums["kills_per_minute"] = average_sums["kills"] / (average_sums["game_duration"] / 60)
+        average_sums["assists_per_minute"] = average_sums["assists"] / (average_sums["game_duration"] / 60)
+        average_sums["deaths_per_minute"] = average_sums["deaths"] / (average_sums["game_duration"] / 60)
+        average_sums["epic_takedowns_per_minute"] = average_sums["epic_takedowns"] / (average_sums["game_duration"] / 60)
 
-    print(f"Archetype Vector: {archetype_sum}")
-    print(f"Role Vector: {role_sum}")
+    print(f"Average Sums: {average_sums}\n")
 
-    match_archetype_vector = {tag: archetype_sum[tag] / n for tag in TAGS}
-    match_role_vector = {role: role_sum[role] / n for role in ROLES}
-    print(f"Normalized Archetype Vector: {match_archetype_vector}")
-    print(f"Normalized Role Vector: {match_role_vector}\n")
+    return average_sums
 
-    return match_archetype_vector, match_role_vector
+# lets think which actual persoanlity i want
+# role archetype plays into each of these
+# use position to normalise, e.g. supp no cs
+# aggression - dpm, kills per min
+# teamwork - kp, assists per min
+# stability - deaths per minute, kda
+# control - vision score per minute
+# scaling - csm, game duration
+
+# current win rate can tie into one of the spotify things
+
+# aggression, teamwork,
+#aggression, teamwork, objective focus, vision control, farming efficiency, win rate, archetype preference, role preference
+def build_personality_vector(average_vector):
+    # placeholder
+    pass
+
+    return None
