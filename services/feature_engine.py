@@ -1,6 +1,7 @@
 from services.riot_service import get_match_data
 from utils.data_loader import CHAMPION_TAGS
 from utils.config import ROLE_RANGES, ROLE_WEIGHTS, TAG_TRAIT_BIAS
+from utils.helpers import normalise, clamp
 
 from collections import defaultdict
 
@@ -103,21 +104,6 @@ def build_average_vector(puuid, matches, region):
     print(f"Average Sums: {average_sums}\n")
 
     return average_sums
-
-def normalise(x, min_val, max_val):
-    score = (x - min_val) / (max_val - min_val)
-    if score < 0:
-        return 0
-    elif score > 1:
-        return 1
-    return score
-
-def clamp(x, min_val, max_val):
-    if x < min_val:
-        return min_val
-    elif x > max_val:
-        return max_val
-    return x
 
 def obtain_normalised_vector(average_vector):
     normalised_vector = defaultdict(float)

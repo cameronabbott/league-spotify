@@ -3,6 +3,14 @@ from dotenv import load_dotenv
 load_dotenv()
 
 RIOT_API_KEY = os.getenv("RIOT_API_KEY")
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+
+if not SPOTIFY_CLIENT_ID:
+    raise ValueError("SPOTIFY_CLIENT_ID not found in environment variables")
+
+if not SPOTIFY_CLIENT_SECRET:
+    raise ValueError("SPOTIFY_CLIENT_SECRET not found in environment variables")
 
 if not RIOT_API_KEY:
     raise ValueError("RIOT_API_KEY not found in environment variables")
@@ -49,7 +57,8 @@ ROLE_RANGES = {
         "vsm": (0.3, 2),
         "epic_takedowns_per_minute": (0, 0.05),
         "csm": (4, 10),
-        "game_duration": (900, 3000)
+        "game_duration": (900, 3000),
+        "win": (0.4, 0.8)
     },
     "JUNGLE": {
         "dpm": (100, 1000),
@@ -61,7 +70,8 @@ ROLE_RANGES = {
         "vsm": (0.5, 3),
         "epic_takedowns_per_minute": (0, 0.1),
         "csm": (4, 10),
-        "game_duration": (900, 3000)
+        "game_duration": (900, 3000),
+        "win": (0.4, 0.8)
     },
     "MIDDLE": {
         "dpm": (200, 1200),
@@ -73,7 +83,8 @@ ROLE_RANGES = {
         "vsm": (0.3, 2),
         "epic_takedowns_per_minute": (0, 0.05),
         "csm": (4, 10),
-        "game_duration": (900, 3000)
+        "game_duration": (900, 3000),
+        "win": (0.4, 0.8)
     },
     "ADC": {
         "dpm": (200, 1200),
@@ -85,7 +96,8 @@ ROLE_RANGES = {
         "vsm": (0.3, 2),
         "epic_takedowns_per_minute": (0, 0.05),
         "csm": (4, 10),
-        "game_duration": (900, 3000)
+        "game_duration": (900, 3000),
+        "win": (0.4, 0.8)
     },
     "UTILITY": {
         "dpm": (100, 700),
@@ -97,7 +109,8 @@ ROLE_RANGES = {
         "vsm": (0.5, 3),
         "epic_takedowns_per_minute": (0, 0.07),
         "csm": (0, 3),
-        "game_duration": (900, 3000)
+        "game_duration": (900, 3000),
+        "win": (0.4, 0.8)
     }
 }
 
