@@ -1,7 +1,7 @@
 import requests
 from urllib.parse import quote
-from utils.config import RIOT_API_KEY
 from utils.config import HEADERS, REGION_TO_ROUTING
+
 
 
 def get_puuid(game_name, tag_line):

@@ -36,3 +36,163 @@ REGION_TO_ROUTING = {
     "LAN": "americas",
     "LAS": "americas",
 }
+
+# min, max
+ROLE_RANGES = {
+    "TOP": {
+        "dpm": (200, 1200),
+        "kills_per_minute": (0.1, 0.5),
+        "kill_participation": (0.1, 0.6),
+        "assists_per_minute": (0.05, 0.4),
+        "deaths_per_minute": (0.1, 0.5),
+        "kda": (0.5, 5),
+        "vsm": (0.3, 2),
+        "epic_takedowns_per_minute": (0, 0.05),
+        "csm": (4, 10),
+        "game_duration": (900, 3000)
+    },
+    "JUNGLE": {
+        "dpm": (100, 1000),
+        "kills_per_minute": (0.1, 0.5),
+        "kill_participation": (0.2, 0.8),
+        "assists_per_minute": (0.1, 0.6),
+        "deaths_per_minute": (0, 0.5),
+        "kda": (0.5, 5),
+        "vsm": (0.5, 3),
+        "epic_takedowns_per_minute": (0, 0.1),
+        "csm": (4, 10),
+        "game_duration": (900, 3000)
+    },
+    "MIDDLE": {
+        "dpm": (200, 1200),
+        "kills_per_minute": (0, 0.5),
+        "kill_participation": (0.2, 0.7),
+        "assists_per_minute": (0.1, 0.5),
+        "deaths_per_minute": (0.1, 0.5),
+        "kda": (0.5, 5),
+        "vsm": (0.3, 2),
+        "epic_takedowns_per_minute": (0, 0.05),
+        "csm": (4, 10),
+        "game_duration": (900, 3000)
+    },
+    "ADC": {
+        "dpm": (200, 1200),
+        "kills_per_minute": (0.1, 0.5),
+        "kill_participation": (0.2, 0.7),
+        "assists_per_minute": (0.1, 0.4),
+        "deaths_per_minute": (0.1, 0.5),
+        "kda": (0.5, 5),
+        "vsm": (0.3, 2),
+        "epic_takedowns_per_minute": (0, 0.05),
+        "csm": (4, 10),
+        "game_duration": (900, 3000)
+    },
+    "UTILITY": {
+        "dpm": (100, 700),
+        "kills_per_minute": (0.05, 0.3),
+        "kill_participation": (0.2, 0.8),
+        "assists_per_minute": (0.2, 0.6),
+        "deaths_per_minute": (0.15, 0.6),
+        "kda": (0.5, 5),
+        "vsm": (0.5, 3),
+        "epic_takedowns_per_minute": (0, 0.07),
+        "csm": (0, 3),
+        "game_duration": (900, 3000)
+    }
+}
+
+# note survivability is deaths per minute inverted (1-deaths_per_minute) scaled to 0-1
+ROLE_WEIGHTS = {
+    "TOP": {
+        "dpm": 0.6,
+        "kills_per_minute": 0.4,
+        "kill_participation": 0.7,
+        "assists_per_minute": 0.3,
+        "survivability": 0.5,
+        "kda": 0.5,
+        "vsm": 0.6,
+        "epic_takedowns_per_minute": 0.4,
+        "csm": 0.8,
+        "game_duration": 0.2
+    },
+    "JUNGLE": {
+        "dpm": 0.5,
+        "kills_per_minute": 0.5,
+        "kill_participation": 0.7,
+        "assists_per_minute": 0.3,
+        "survivability": 0.6,
+        "kda": 0.4,
+        "vsm": 0.5,
+        "epic_takedowns_per_minute": 0.5,
+        "csm": 0.6,
+        "game_duration": 0.4
+    },
+    "MIDDLE": {
+        "dpm": 0.6,
+        "kills_per_minute": 0.4,
+        "kill_participation": 0.7,
+        "assists_per_minute": 0.3,
+        "survivability": 0.5,
+        "kda": 0.5,
+        "vsm": 0.6,
+        "epic_takedowns_per_minute": 0.4,
+        "csm": 0.8,
+        "game_duration": 0.2
+    },
+    "ADC": {
+        "dpm": 0.6,
+        "kills_per_minute": 0.4,
+        "kill_participation": 0.7,
+        "assists_per_minute": 0.3,
+        "survivability": 0.6,
+        "kda": 0.4,
+        "vsm": 0.4,
+        "epic_takedowns_per_minute": 0.6,
+        "csm": 0.9,
+        "game_duration": 0.1
+    },
+    "UTILITY": {
+        "dpm": 0.7,
+        "kills_per_minute": 0.3,
+        "kill_participation": 0.7,
+        "assists_per_minute": 0.3,
+        "survivability": 0.7,
+        "kda": 0.3,
+        "vsm": 0.8,
+        "epic_takedowns_per_minute": 0.2,
+        "csm": 0.3,
+        "game_duration": 0.7
+    }
+}
+
+TAG_TRAIT_BIAS = {
+    "Marksman": {
+        "scaling": 0.25,
+        "stability": 0.15
+    },
+
+    "Assassin": {
+        "aggression": 0.30,
+        "control": 0.15
+    },
+
+    "Mage": {
+        "control": 0.30,
+        "scaling": 0.15
+    },
+
+    "Tank": {
+        "stability": 0.35,
+        "control": 0.20
+    },
+
+    "Fighter": {
+        "aggression": 0.20,
+        "stability": 0.15
+    },
+
+    "Support": {
+        "teamwork": 0.30,
+        "control": 0.20
+    }
+}

@@ -1,5 +1,8 @@
 from services.riot_service import get_match_data
 from utils.data_loader import CHAMPION_TAGS
+from utils.config import ROLE_RANGES, ROLE_WEIGHTS, TAG_TRAIT_BIAS
+
+from collections import defaultdict
 
 TAGS = ["Marksman", "Assassin", "Mage", "Tank", "Fighter", "Support"]
 
@@ -30,6 +33,8 @@ def get_player_data_from_match(match_data, puuid):
     print(f"Error: Player with puuid {puuid} not found in match data")
     return None
 
+# if someone plays supp it will skew some of the stats
+# maybe change this later or separate
 def build_average_vector(puuid, matches, region):
     n = len(matches)
     if matches is None or n == 0:
@@ -99,21 +104,68 @@ def build_average_vector(puuid, matches, region):
 
     return average_sums
 
+def normalise(x, min_val, max_val):
+    score = (x - min_val) / (max_val - min_val)
+    if score < 0:
+        return 0
+    elif score > 1:
+        return 1
+    return score
+
+def clamp(x, min_val, max_val):
+    if x < min_val:
+        return min_val
+    elif x > max_val:
+        return max_val
+    return x
+
+def obtain_normalised_vector(average_vector):
+    normalised_vector = defaultdict(float)
+    for role in average_vector["role"]:
+         if average_vector["role"][role] > 0:
+            for metric in ROLE_RANGES[role]:
+                min_val, max_val = ROLE_RANGES[role][metric]
+                if metric == "deaths_per_minute":
+                    normalised_vector["survivability"] += (1 - normalise(average_vector[metric], min_val, max_val)) * average_vector["role"][role]
+                else:
+                    normalised_vector[metric] += normalise(average_vector[metric], min_val, max_val) * average_vector["role"][role]
+
+    print(f"Normalised Vector: {normalised_vector}\n")
+    return normalised_vector
 # lets think which actual persoanlity i want
 # role archetype plays into each of these
 # use position to normalise, e.g. supp no cs
 # aggression - dpm, kills per min
 # teamwork - kp, assists per min
 # stability - deaths per minute, kda
-# control - vision score per minute
+# control - vision score per minute, epic takedowns per minute
 # scaling - csm, game duration
 
+# i should also use the role archetype to infleucne some of them, e.g. mage more scaling
 # current win rate can tie into one of the spotify things
+# need to compare to baseline, we can change it later
 
 # aggression, teamwork,
-#aggression, teamwork, objective focus, vision control, farming efficiency, win rate, archetype preference, role preference
-def build_personality_vector(average_vector):
-    # placeholder
-    pass
+#aggression, teamwork, objective focus, vision control, zfarming efficiency, win rate, archetype preference, role preference
+def build_personality_vector(normalised_vector, role_ratio, tag_ratio):
+    personality_vector = defaultdict(float)
+    for role in role_ratio:
+        if role_ratio[role] > 0:
+            personality_vector["aggression"] += role_ratio[role] * (ROLE_WEIGHTS[role]["dpm"] * normalised_vector["dpm"] + ROLE_WEIGHTS[role]["kills_per_minute"] * normalised_vector["kills_per_minute"])
+            personality_vector["teamwork"] += role_ratio[role] * (ROLE_WEIGHTS[role]["kill_participation"] * normalised_vector["kill_participation"] + ROLE_WEIGHTS[role]["assists_per_minute"] * normalised_vector["assists_per_minute"])
+            personality_vector["stability"] += role_ratio[role] * (ROLE_WEIGHTS[role]["survivability"] * normalised_vector["survivability"] + ROLE_WEIGHTS[role]["kda"] * normalised_vector["kda"])
+            personality_vector["control"] += role_ratio[role] * (ROLE_WEIGHTS[role]["vsm"] * normalised_vector["vsm"] + ROLE_WEIGHTS[role]["epic_takedowns_per_minute"] * normalised_vector["epic_takedowns_per_minute"])
+            personality_vector["scaling"] += role_ratio[role] * (ROLE_WEIGHTS[role]["csm"] * normalised_vector["csm"] + ROLE_WEIGHTS[role]["game_duration"] * normalised_vector["game_duration"])
+    
+    tag_effect = defaultdict(float)
+    for tag in tag_ratio:
+        if tag_ratio[tag] > 0:
+            for personality in TAG_TRAIT_BIAS[tag]:
+                tag_effect[personality] += tag_ratio[tag] * TAG_TRAIT_BIAS[tag][personality]
+    
+    for personality in personality_vector:
+        personality_vector[personality] = clamp(personality_vector[personality] + tag_effect.get(personality, 0), 0, 1)
 
-    return None
+    print(f"Personality Vector: {personality_vector}\n")
+    return personality_vector
+
