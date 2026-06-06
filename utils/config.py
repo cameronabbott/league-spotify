@@ -209,3 +209,24 @@ TAG_TRAIT_BIAS = {
         "control": 0.20
     }
 }
+
+# music clusters/genres with their music profile, genre is too generic e.g. kpop girl group vs boy group different
+#kpop
+#edm
+#melodic edm
+# rock
+# mdoern hip hop trap
+# chill hip  hop
+# old school pop
+# lofi beats
+# acoustic/ indie singer song writer
+# alternative indie e.g. wallows arctic monkeys
+# pop mainstream
+# kpop male, kpop female
+#rnb 
+# krnb
+# jpop
+# video game songs
+MUSIC_GENRES = {
+    
+}
