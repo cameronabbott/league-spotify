@@ -5,8 +5,7 @@ def music_vector(personality_vector, win_norm):
         "energy": 0.7 * personality_vector["aggression"] + 0.3 * personality_vector["control"],
         "danceability": 0.6 * personality_vector["teamwork"] + 0.4 * personality_vector["aggression"],
         "valence": 0.4 * personality_vector["stability"] + 0.6 * personality_vector["teamwork"],
-        "instrumentalness": 0.4 * personality_vector["scaling"] + 0.6 * personality_vector["control"],
-        "acousticness": 0.7 * personality_vector["stability"] + 0.3 * personality_vector["scaling"],
+        "instrumentalness": 0.4 * personality_vector["scaling"] + 0.6 * personality_vector["control"]
     }
     # winrate nudge
     music_vector["energy"] = clamp(music_vector["energy"] * 0.9 + 0.2 * win_norm, 0, 1)
