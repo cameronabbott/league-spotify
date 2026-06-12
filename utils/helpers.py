@@ -11,6 +11,9 @@ def cosine_similarity(a, b):
 
     return dot / (mag_a * mag_b)
 
+def euclidean_distance(a, b):
+    return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b)))
+
 def jitter(x, amount=0.05):
     return x + random.uniform(-amount, amount)
 

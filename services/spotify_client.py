@@ -78,23 +78,65 @@ class SpotifyClient:
     # Example: q=remaster%2520track%3ADoxy%2520artist%3AMiles%2520Davis
     # yeah using the genre is terrible
     # seraching just for kpop is better than using q
-    def search(self, genre):
+
+
+
+    def search(self, genre, limit=10, max_pages=4 ):
         search_query = MUSIC_CLUSTER_TO_SPOTIFY_SERACH.get(genre)
         if search_query is None:
             print(f"Error: No Spotify search query found for genre '{genre}'")
             return None
-        
+
         headers = {
             "Authorization": f"Bearer {self.get_token()}"
         }
+
         url = "https://api.spotify.com/v1/search"
-        params = {
-            "q": search_query,
-            "type": "track",
-            "limit": 2
-        }
-        response = requests.get(url, headers=headers, params=params)
-        if response.status_code != 200:
-            print(f"Error searching Spotify: {response.status_code} - {response.text}")
-            return None
-        return response.json()
+
+        track_list = []
+        seen_ids = set()
+
+        for i in range(max_pages):
+            offset = i * limit
+
+            params = {
+                "q": search_query,
+                "type": "track",
+                "limit": limit,
+                "offset": offset
+            }
+
+            response = requests.get(url, headers=headers, params=params)
+
+            if response.status_code != 200:
+                print(f"Error searching Spotify: {response.status_code} - {response.text}")
+                break
+
+            data = response.json()
+            items = data.get("tracks", {}).get("items", [])
+
+            if not items:
+                print("No more results returned by Spotify.")
+                break
+
+            for track in items:
+                track_id = track["id"]
+
+                if track_id in seen_ids:
+                    continue
+
+                seen_ids.add(track_id)
+
+                artist_names = [a["name"] for a in track["artists"]]
+
+                track_list.append((
+                    track["name"],
+                    artist_names,
+                    track_id
+                ))
+
+        print(len(track_list))
+        for track in track_list:
+            print(f"Track Name: {track[0]}, Artists: {track[1]}, Spotify ID: {track[2]}")
+
+        return track_list
