@@ -210,23 +210,21 @@ TAG_TRAIT_BIAS = {
     }
 }
 
-# music clusters/genres with their music profile, genre is too generic e.g. kpop girl group vs boy group different
-#kpop
-#edm
-#melodic edm
-# rock
-# mdoern hip hop trap
-# chill hip  hop
-# old school pop
-# lofi beats
-# acoustic/ indie singer song writer
-# alternative indie e.g. wallows arctic monkeys
-# pop mainstream
-# kpop male, kpop female
-#rnb 
-# krnb
-# jpop
-# video game songs
-MUSIC_GENRES = {
-    
+MUSIC_CLUSTER_VECTORS = {
+    "pop": [0.67, 0.68, 0.61, 0.52],
+    "kpop": [0.79, 0.72, 0.68, 0.64],
+    "jpop": [0.73, 0.55, 0.59, 0.55],
+    "hiphop": [0.62, 0.77, 0.54, 0.57],
+    "rap": [0.58, 0.76, 0.39, 0.60],
+    "trap": [0.65, 0.79, 0.46, 0.66],
+    "drill": [0.60, 0.83, 0.67, 0.68],
+    "edm": [0.78, 0.62, 0.44, 0.60],
+    "electronic": [0.86, 0.64, 0.49, 0.62],
+    "house": [0.79, 0.76, 0.51, 0.60],
+    "techno": [0.91, 0.64, 0.30, 0.76],
+    "rock": [0.76, 0.48, 0.58, 0.66],
+    "alternative": [0.69, 0.52, 0.41, 0.58],
+    "indie": [0.67, 0.59, 0.56, 0.50],
+    "lofi": [0.20, 0.60, 0.20, 0.48],
+    "downtempo": [0.53, 0.78, 0.32, 0.46]
 }

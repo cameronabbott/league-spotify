@@ -63,7 +63,7 @@ class SpotifyClient:
             "target_energy": spotify_vector["energy"],
             "target_danceability": spotify_vector["danceability"],
             "target_valence": spotify_vector["valence"],
-            "target_instrumentalness": spotify_vector["instrumentalness"],
+            "target_tempo": spotify_vector["tempo"],
             "seed_genres": "k-pop"
         }
         response = requests.get(url, headers=headers, params=params)
@@ -72,8 +72,14 @@ class SpotifyClient:
             return None
         return response.json()
     
+    # must be owned by the authenticated user or collaborative playlist
+    def get_playlist_items(self, playlist_id, limit=40):
+        tracks = self.sp.playlist_items(playlist_id, limit=limit)["items"]
+
+        return [(track["item"]["name"], track["item"]["artists"][0]["name"], track["item"]["id"]) for track in tracks]
+    
     def get_playlist(self, playlist_id):
-        url = f"https://api.spotify.com/v1/playlists/{playlist_id}/items"
+        url = f"https://api.spotify.com/v1/playlists/{playlist_id}"
 
         headers = {
             "Authorization": f"Bearer {self.get_token()}"
