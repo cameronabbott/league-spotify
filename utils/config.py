@@ -228,3 +228,22 @@ MUSIC_CLUSTER_VECTORS = {
     "lofi": [0.20, 0.60, 0.20, 0.48],
     "downtempo": [0.53, 0.78, 0.32, 0.46]
 }
+
+MUSIC_CLUSTER_TO_SPOTIFY_SERACH = {
+    "pop": "pop hits",
+    "kpop": "kpop",
+    "jpop": "jpop",
+    "hiphop": "hip hop",
+    "rap": "rap",
+    "trap": "trap",
+    "drill": "drill",
+    "edm": "edm",
+    "electronic": "electronic",
+    "house": "house",
+    "techno": "techno",
+    "rock": "rock",
+    "alternative": "alternative",
+    "indie": "indie",
+    "lofi": "lofi",
+    "downtempo": "downtempo"
+}
