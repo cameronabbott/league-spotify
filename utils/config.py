@@ -225,25 +225,40 @@ MUSIC_CLUSTER_VECTORS = {
     "rock": [0.76, 0.48, 0.58, 0.66],
     "alternative": [0.69, 0.52, 0.41, 0.58],
     "indie": [0.67, 0.59, 0.56, 0.50],
-    "lofi": [0.20, 0.60, 0.20, 0.48],
+    "chillhop": [0.20, 0.60, 0.20, 0.48],
     "downtempo": [0.53, 0.78, 0.32, 0.46]
 }
 
-MUSIC_CLUSTER_TO_SPOTIFY_SERACH = {
+MUSIC_CLUSTER_TO_SPOTIFY_SEARCH = {
     "pop": "pop hits",
     "kpop": "kpop",
     "jpop": "jpop",
-    "hiphop": "hip hop",
-    "rap": "rap",
-    "trap": "trap",
-    "drill": "drill",
-    "edm": "edm",
-    "electronic": "electronic",
-    "house": "house",
-    "techno": "techno",
-    "rock": "rock",
-    "alternative": "alternative",
-    "indie": "indie",
-    "lofi": "lofi",
+    "hiphop": "hip hop songs",
+    "rap": "rap songs",
+    "trap": "trap songs",
+    "drill": "drill hits",
+    "edm": "edm songs",
+    "electronic": "electronic hits",
+    "house": "house music",
+    "techno": "techno music",
+    "rock": "rock music",
+    "alternative": "alternative songs",
+    "indie": "indie rock",
+    "chillhop": "chillhop beats",
     "downtempo": "downtempo"
 }
+
+BAD_KEYWORDS = [
+    "live",
+    "radio edit",
+    "acoustic",
+    "instrumental",
+    "karaoke",
+    "sped up",
+    "slowed",
+    "nightcore",
+    "kids",
+    "peppa",
+    "child"
+]
+

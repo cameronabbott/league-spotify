@@ -2,7 +2,7 @@ from utils.config import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
 import requests
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from utils.config import MUSIC_CLUSTER_TO_SPOTIFY_SERACH
+from utils.config import MUSIC_CLUSTER_TO_SPOTIFY_SEARCH
 
 # flesh this out later, refresh the token etc, use better authentication
 # i need seed tracks or generes... i need to map personality vector to those as well
@@ -82,7 +82,8 @@ class SpotifyClient:
 
 
     def search(self, genre, limit=10, max_pages=4 ):
-        search_query = MUSIC_CLUSTER_TO_SPOTIFY_SERACH.get(genre)
+        search_query = MUSIC_CLUSTER_TO_SPOTIFY_SEARCH.get(genre)
+        print(f"Searching Spotify for genre '{genre}' with query '{search_query}'")
         if search_query is None:
             print(f"Error: No Spotify search query found for genre '{genre}'")
             return None
@@ -137,6 +138,6 @@ class SpotifyClient:
 
         print(len(track_list))
         for track in track_list:
-            print(f"Track Name: {track[0]}, Artists: {track[1]}, Spotify ID: {track[2]}")
+            print(f"Track Name: {track[0]}, Artists : {track[1]}, Spotify ID: {track[2]}")
 
         return track_list

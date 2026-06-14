@@ -15,10 +15,10 @@ def music_vector(personality_vector, win_norm):
     # winrate nudge
     music_vector[0] = clamp(music_vector[0] * 0.9 + 0.2 * win_norm, 0, 1)
 
-    print(f"Music Vector before jitter: {music_vector}\n")
+    # print(f"Music Vector before jitter: {music_vector}\n")
     
-    for i in range(len(music_vector)):
-        music_vector[i] = clamp(jitter(music_vector[i], amount=0.05), 0, 1)
+    # for i in range(len(music_vector)):
+    #     music_vector[i] = clamp(jitter(music_vector[i], amount=0.05), 0, 1)
 
     print(f"Music Vector: {music_vector}\n")
     return music_vector
