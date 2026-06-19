@@ -9,6 +9,13 @@ TAGS = ["Marksman", "Assassin", "Mage", "Tank", "Fighter", "Support"]
 
 ROLES = ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"]
 
+class NotEnoughValidMatches(Exception):
+    def __init__(self, valid_matches, checked_matches, required_matches):
+        self.valid_matches = valid_matches
+        self.checked_matches = checked_matches
+        self.required_matches = required_matches
+        super().__init__("Not enough valid ranked matches.")
+
 def get_player_data_from_match(match_data, puuid):
     print(f"\nExtracting player data for puuid: {puuid} from match data")
     participants = match_data.get("info", {}).get("participants", [])
@@ -39,7 +46,7 @@ def get_player_data_from_match(match_data, puuid):
 
 # if someone plays supp it will skew some of the stats
 # maybe change this later or separate
-def build_average_vector(puuid, matches, region):
+def build_average_vector(puuid, matches, region, min_valid_matches=5):
     n = 0
     if matches is None:
         print(f"No matches found for puuid: {puuid}")
@@ -65,12 +72,14 @@ def build_average_vector(puuid, matches, region):
 
     for match_id in matches:
         match_data = get_match_data(match_id, region)
+        if not match_data:
+            continue
+
         player_data = get_player_data_from_match(match_data, puuid)
     
         if player_data:
             n += 1
-            role = player_data["role"]
-            sums["role"][role] += 1
+            sums["role"][player_data["role"]] += 1
             sums["kills"] += player_data["kills"]
             sums["deaths"] += player_data["deaths"]
             sums["assists"] += player_data["assists"]
@@ -92,9 +101,9 @@ def build_average_vector(puuid, matches, region):
             else:
                 print(f"Error: Champion {champion_name} has unexpected number of tags: {len(tags)}")
         
-    if n == 0:
-        print(f"No valid matches found for puuid: {puuid}")
-        return {}
+    if n < min_valid_matches:
+        print(f"Only {n} valid matches found for puuid: {puuid}")
+        raise NotEnoughValidMatches(n, len(matches), min_valid_matches)
     average_sums = {key: (sums[key] / n if isinstance(sums[key], (int, float)) else {subkey: sums[key][subkey] / n for subkey in sums[key]}) for key in sums}
     deaths = 1
     if average_sums["deaths"] > 0:
@@ -162,4 +171,3 @@ def build_personality_vector(normalised_vector, role_ratio, tag_ratio):
 
     print(f"Personality Vector: {personality_vector}\n")
     return personality_vector
-

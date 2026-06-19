@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>League Spotify Recommender</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="lookup-panel" aria-labelledby="page-title">
+        <div class="title-block">
+          <p class="eyebrow">League x Spotify</p>
+          <h1 id="page-title">Match history playlist</h1>
+        </div>
+
+        <form id="recommendation-form" class="lookup-form">
+          <label for="riot-id">Riot ID</label>
+          <input
+            id="riot-id"
+            name="riot-id"
+            type="text"
+            placeholder="GameName#TAG"
+            autocomplete="off"
+            required
+          />
+
+          <label for="region">Region</label>
+          <select id="region" name="region" required>
+            <option value="EUW">EUW</option>
+            <option value="EUNE">EUNE</option>
+            <option value="NA">NA</option>
+            <option value="KR">KR</option>
+            <option value="JP">JP</option>
+            <option value="BR">BR</option>
+            <option value="LAN">LAN</option>
+            <option value="LAS">LAS</option>
+            <option value="OCE">OCE</option>
+            <option value="ME">ME</option>
+            <option value="TR">TR</option>
+            <option value="RU">RU</option>
+            <option value="SEA">SEA</option>
+            <option value="SG">SG</option>
+            <option value="TW">TW</option>
+            <option value="VN">VN</option>
+            <option value="PH">PH</option>
+            <option value="TH">TH</option>
+          </select>
+
+          <button id="submit-button" type="submit">Generate playlist</button>
+        </form>
+
+        <p id="status-message" class="status-message" role="status"></p>
+      </section>
+
+      <section class="results-panel" aria-labelledby="results-title">
+        <div class="results-header">
+          <div>
+            <p class="eyebrow">Recommended sound</p>
+            <h2 id="results-title">Your 10 tracks</h2>
+          </div>
+          <p id="cluster-label" class="cluster-label">Awaiting profile</p>
+        </div>
+
+        <ol id="tracks-list" class="tracks-list">
+          <li class="empty-state">Submit a Riot ID to build the playlist.</li>
+        </ol>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

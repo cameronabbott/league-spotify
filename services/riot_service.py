@@ -2,16 +2,48 @@ import requests
 from urllib.parse import quote
 from utils.config import HEADERS, REGION_TO_ROUTING
 
+UNEXPECTED_API_ERROR = "Unexpected error found. Please try again later."
+
+
+class RiotApiError(Exception):
+    def __init__(self, status_code, detail):
+        self.status_code = status_code
+        self.detail = detail
+        super().__init__(detail)
+
+
+def raise_riot_error(response, action):
+    print(f"Error {action}: {response.status_code} - {response.text}")
+
+    if response.status_code in (401, 403):
+        raise RiotApiError(
+            502,
+            UNEXPECTED_API_ERROR,
+        )
+
+    if response.status_code == 429:
+        raise RiotApiError(
+            429,
+            UNEXPECTED_API_ERROR,
+        )
+
+    raise RiotApiError(
+        502,
+        UNEXPECTED_API_ERROR,
+    )
 
 
 def get_puuid(game_name, tag_line):
     print(f"\nFetching puuid for player: {game_name} #{tag_line}")
+
     url = f"https://europe.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{quote(game_name)}/{quote(tag_line)}"
     response = requests.get(url, headers=HEADERS)
 
     if response.status_code != 200:
-        print(f"Error fetching puuid: {response.status_code} - {response.text}")
-        return None
+        if response.status_code == 404:
+            print(f"Account not found: {response.status_code} - {response.text}")
+            return None
+        raise_riot_error(response, "fetch the Riot account")
     
     puuid = response.json().get("puuid")
     if puuid is None:
@@ -32,8 +64,7 @@ def get_matches(puuid, region, count=10):
     response = requests.get(url, headers=HEADERS)
 
     if response.status_code != 200:
-        print(f"Error fetching matches: {response.status_code} - {response.text}")
-        return None
+        raise_riot_error(response, "fetch ranked match history")
     
     matches = response.json()
     print(f"Matches: {matches}\n")
@@ -54,12 +85,8 @@ def get_match_data(match_id, region):
     response = requests.get(url, headers=HEADERS)
 
     if response.status_code != 200:
-        print(f"Error fetching match data: {response.status_code} - {response.text}")
-        return None
+        raise_riot_error(response, "fetch match data")
     
     match_data = response.json()
     # print(f"Match Data: {match_data}")
     return match_data
-
-
-

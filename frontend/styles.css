@@ -1,0 +1,267 @@
+:root {
+  color-scheme: dark;
+  --panel: #141b23;
+  --panel-strong: #1b2630;
+  --line: #2b3744;
+  --text: #f6f1e8;
+  --muted: #a7b2be;
+  --accent: #28d17c;
+  --accent-dark: #169b58;
+  --warning: #ffcf5a;
+  --danger: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 18% 15%, rgba(40, 209, 124, 0.14), transparent 28%),
+    linear-gradient(135deg, #0c1117 0%, #17212b 55%, #111820 100%);
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 680px);
+  gap: 24px;
+  width: min(1180px, calc(100% - 32px));
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 48px 0;
+  align-items: center;
+}
+
+.lookup-panel,
+.results-panel {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(20, 27, 35, 0.92);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+}
+
+.lookup-panel {
+  padding: 28px;
+}
+
+.results-panel {
+  min-height: 620px;
+  padding: 28px;
+}
+
+.title-block,
+.results-header {
+  margin-bottom: 24px;
+}
+
+.results-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+h1,
+h2 {
+  margin: 0;
+  line-height: 1.05;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 7vw, 4.8rem);
+  max-width: 8ch;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+.lookup-form {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #0e151d;
+  color: var(--text);
+  padding: 0 14px;
+  outline: none;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(40, 209, 124, 0.18);
+}
+
+button {
+  min-height: 50px;
+  margin-top: 8px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #04100a;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+button:hover {
+  background: #40e891;
+}
+
+button:disabled {
+  cursor: wait;
+  background: var(--accent-dark);
+}
+
+.status-message {
+  min-height: 22px;
+  margin: 18px 0 0;
+  color: var(--muted);
+}
+
+.status-message.error {
+  color: var(--danger);
+}
+
+.cluster-label {
+  min-width: 120px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 12px;
+  color: var(--warning);
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.tracks-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track-item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  min-height: 72px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel-strong);
+  padding: 12px 14px;
+}
+
+.track-rank {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #0e151d;
+  color: var(--accent);
+  font-weight: 900;
+}
+
+.track-name {
+  margin: 0 0 4px;
+  overflow-wrap: anywhere;
+  font-weight: 850;
+}
+
+.track-artists {
+  margin: 0;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.track-link {
+  color: var(--accent);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.track-link:hover {
+  text-decoration: underline;
+}
+
+.empty-state {
+  border: 1px dashed var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  padding: 28px;
+  text-align: center;
+}
+
+@media (max-width: 860px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    min-height: auto;
+    padding: 24px 0;
+  }
+
+  .results-panel {
+    min-height: 420px;
+  }
+
+  h1 {
+    max-width: 11ch;
+  }
+}
+
+@media (max-width: 560px) {
+  .lookup-panel,
+  .results-panel {
+    padding: 20px;
+  }
+
+  .results-header,
+  .track-item {
+    grid-template-columns: 1fr;
+  }
+
+  .results-header {
+    display: grid;
+  }
+
+  .cluster-label {
+    width: fit-content;
+  }
+
+  .track-item {
+    justify-items: start;
+  }
+}

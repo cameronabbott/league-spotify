@@ -20,29 +20,50 @@ HEADERS = {
 }
 
 
-# The AMERICAS routing value serves NA, BR, LAN and LAS. The ASIA routing value serves KR and JP. 
-# The EUROPE routing value serves EUNE, EUW, ME1, TR and RU. The SEA routing value serves OCE, SG2, TW2 and VN2.
+# Match V5 uses regional routing. Keep the user-facing labels friendly, but
+# accept Riot's platform codes as aliases in case they come from an API doc.
 
 
 REGION_TO_ROUTING = {
+    "ASIA": "asia",
     "KR": "asia",
     "JP": "asia",
+    "JP1": "asia",
 
+    "EUROPE": "europe",
     "EUNE": "europe",
+    "EUN1": "europe",
     "EUW": "europe",
+    "EUW1": "europe",
+    "ME": "europe",
     "ME1": "europe",
     "TR": "europe",
+    "TR1": "europe",
     "RU": "europe",
 
+    "SEA": "sea",
     "OCE": "sea",
+    "OC1": "sea",
+    "SG": "sea",
     "SG2": "sea",
+    "TW": "sea",
     "TW2": "sea",
+    "VN": "sea",
     "VN2": "sea",
+    "PH": "sea",
+    "PH2": "sea",
+    "TH": "sea",
+    "TH2": "sea",
 
+    "AMERICAS": "americas",
     "NA": "americas",
+    "NA1": "americas",
     "BR": "americas",
+    "BR1": "americas",
     "LAN": "americas",
+    "LA1": "americas",
     "LAS": "americas",
+    "LA2": "americas",
 }
 
 # min, max
@@ -86,7 +107,7 @@ ROLE_RANGES = {
         "game_duration": (900, 3000),
         "win": (0.4, 0.8)
     },
-    "ADC": {
+    "BOTTOM": {
         "dpm": (200, 1200),
         "kills_per_minute": (0.1, 0.5),
         "kill_participation": (0.2, 0.7),
@@ -152,7 +173,7 @@ ROLE_WEIGHTS = {
         "csm": 0.8,
         "game_duration": 0.2
     },
-    "ADC": {
+    "BOTTOM": {
         "dpm": 0.6,
         "kills_per_minute": 0.4,
         "kill_participation": 0.7,
@@ -261,4 +282,3 @@ BAD_KEYWORDS = [
     "peppa",
     "child"
 ]
-
