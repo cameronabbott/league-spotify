@@ -257,7 +257,7 @@ MUSIC_CLUSTER_TO_SPOTIFY_SEARCH = {
     "hiphop": "hip hop songs",
     "rap": "rap songs",
     "trap": "trap songs",
-    "drill": "drill hits",
+    "drill": "drill music",
     "edm": "edm songs",
     "electronic": "electronic hits",
     "house": "house music",
