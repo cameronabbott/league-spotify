@@ -37,7 +37,7 @@ def format_track(scored_track):
     }
 
 
-def recommend_tracks_for_player(riot_id, region, limit=10):
+def recommend_tracks_for_player(riot_id, region, limit=15):
     region = region.upper().strip()
 
     if region not in REGION_TO_ROUTING:
@@ -137,6 +137,10 @@ def recommend_tracks_for_player(riot_id, region, limit=10):
         "riot_id": f"{game_name}#{tag_line}",
         "region": region,
         "cluster": cluster,
+        "personality_vector": {
+            trait: round(value, 4)
+            for trait, value in personality_vector.items()
+        },
         "music_vector": [round(value, 4) for value in target_music_vector],
         "recommendations": recommendations,
     }

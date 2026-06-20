@@ -54,10 +54,27 @@
         <div class="results-header">
           <div>
             <p class="eyebrow">Recommended sound</p>
-            <h2 id="results-title">Your 10 tracks</h2>
+            <h2 id="results-title">Playlist Preview</h2>
           </div>
           <p id="cluster-label" class="cluster-label">Awaiting profile</p>
         </div>
+
+        <div id="traits-panel" class="traits-panel hidden" aria-labelledby="traits-title">
+          <div class="traits-header">
+            <h3 id="traits-title">Playstyle traits</h3>
+            <p id="genre-explanation" class="genre-explanation"></p>
+          </div>
+          <div id="traits-list" class="traits-list"></div>
+        </div>
+
+        <div class="tracks-toolbar">
+          <p id="tracks-count" class="tracks-count">Submit a Riot ID to build the playlist.</p>
+          <button id="full-playlist-button" type="button" class="secondary-button hidden">
+            Get full playlist
+          </button>
+        </div>
+
+        <p id="playlist-link" class="playlist-link hidden"></p>
 
         <ol id="tracks-list" class="tracks-list">
           <li class="empty-state">Submit a Riot ID to build the playlist.</li>
